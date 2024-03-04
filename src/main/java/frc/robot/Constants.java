@@ -14,10 +14,10 @@ package frc.robot;
  */
 public final class Constants {
   public static final class DriveConstants {
-    public static final int kLeftMotor1Port = 0;
-    public static final int kLeftMotor2Port = 1;
-    public static final int kRightMotor1Port = 2;
-    public static final int kRightMotor2Port = 3;
+    public static final int kLeftMotor1Port = 3;
+    public static final int kLeftMotor2Port = 2;
+    public static final int kRightMotor1Port = 4;
+    public static final int kRightMotor2Port = 5;
 
     public static final int[] kLeftEncoderPorts = new int[] {0, 1};
     public static final int[] kRightEncoderPorts = new int[] {2, 3};
@@ -32,13 +32,13 @@ public final class Constants {
 
     public static final boolean kGyroReversed = false;
 
-    public static final double kStabilizationP = 1;
+    public static final double kStabilizationP = 0.5;
     public static final double kStabilizationI = 0.5;
-    public static final double kStabilizationD = 0;
+    public static final double kStabilizationD = 0.10;
 
-    public static final double kTurnP = 1;
-    public static final double kTurnI = 0;
-    public static final double kTurnD = 0;
+    public static final double kTurnP = 0.5;
+    public static final double kTurnI = 0.5;
+    public static final double kTurnD = 0.10;
 
     public static final double kMaxTurnRateDegPerS = 100;
     public static final double kMaxTurnAccelerationDegPerSSquared = 300;
@@ -49,12 +49,27 @@ public final class Constants {
 
   public static final class DriveStraightConstants {
     // these pid constants are not real, and will need to be tuned
-    public static final double kP = 4.0;
-    public static final double kI = 0.0;
-    public static final double kD = 0.0;
+    public static final double kP = 0.5;
+    public static final double kI = 0.5;
+    public static final double kD = 0.10;
   }
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
+  }
+
+  public static final class IntakeConstants{
+      public static final int kIntakePort = 10;
+      public static final double intakeSpeed = 0.5;
+      public static final double ejectSpeed = -0.5;
+
+  }
+
+  public static final class ShooterConstants{
+    public static final int k_TopShooterPort = 11;
+    public static final int k_BottomShooterPort = 12;
+    public static final double shooterSpeed = 0.5;
+    public static final double ejectSpeed = -0.5;
   }
 }

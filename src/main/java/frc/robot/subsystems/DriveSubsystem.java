@@ -1,25 +1,37 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorController;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.kauailabs.navx.frc.AHRS;         //NavX code
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.SPI;           //NavX code
 import frc.robot.Constants.*;
 
 public class DriveSubsystem extends SubsystemBase {
   // The motors on the left side of the drive.
-  private final PWMSparkMax m_leftLeader = new PWMSparkMax(DriveConstants.kLeftMotor1Port);
-  private final PWMSparkMax m_leftFollower = new PWMSparkMax(DriveConstants.kLeftMotor2Port);
+  private final CANSparkMax m_leftLeader = new CANSparkMax(DriveConstants.kLeftMotor1Port, MotorType.kBrushless);
+  private final CANSparkMax m_leftFollower = new CANSparkMax(DriveConstants.kLeftMotor2Port,  MotorType.kBrushless);
 
   // The motors on the right side of the drive.
-  private final PWMSparkMax m_rightLeader = new PWMSparkMax(DriveConstants.kRightMotor1Port);
-  private final PWMSparkMax m_rightFollower = new PWMSparkMax(DriveConstants.kRightMotor2Port);
+  private final CANSparkMax m_rightLeader = new CANSparkMax(DriveConstants.kRightMotor1Port,  MotorType.kBrushless);
+  private final CANSparkMax m_rightFollower = new CANSparkMax(DriveConstants.kRightMotor2Port,  MotorType.kBrushless);
 
   // The robot's drive
   private final DifferentialDrive m_drive =
@@ -40,20 +52,24 @@ public class DriveSubsystem extends SubsystemBase {
           DriveConstants.kRightEncoderReversed);
 
   // The gyro sensor
-  private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro();
+   public AHRS m_gyro = new AHRS(SPI.Port.kMXP);
+   
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
+    zeroHeading();
     SendableRegistry.addChild(m_drive, m_leftLeader);
     SendableRegistry.addChild(m_drive, m_rightLeader);
 
-    m_leftLeader.addFollower(m_leftFollower);
-    m_rightLeader.addFollower(m_rightFollower);
+    m_leftFollower.follow(m_leftLeader);
+    m_rightFollower.follow(m_rightLeader);
+
 
     // We need to invert one side of the drivetrain so that positive voltages
     // result in both sides moving forward. Depending on how your robot's
     // gearbox is constructed, you might have to invert the left side instead.
     m_rightLeader.setInverted(true);
+
 
     // Sets the distance per pulse for the encoders
     m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
@@ -66,8 +82,8 @@ public class DriveSubsystem extends SubsystemBase {
    * @param fwd the commanded forward movement
    * @param rot the commanded rotation
    */
-  public void arcadeDrive(double fwd, double rot) {
-    m_drive.arcadeDrive(fwd, rot);
+  public void arcadeDrive(double rot, double fwd) {
+    m_drive.arcadeDrive(rot, fwd);
   }
 
   /** Resets the drive encoders to currently read a position of 0. */
@@ -134,4 +150,20 @@ public class DriveSubsystem extends SubsystemBase {
   public double getTurnRate() {
     return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
   }
+
+  public double getGyroAngle(){
+    return m_gyro.getAngle();
+  }
+
+   @Override
+  public void initSendable(SendableBuilder builder) {
+    super.initSendable(builder);
+    // Publish encoder distances to telemetry.
+    builder.addDoubleProperty("leftDistance", m_leftEncoder::getDistance, null);
+    builder.addDoubleProperty("rightDistance", m_rightEncoder::getDistance, null);
+  }
+
+ 
+
+
 }
