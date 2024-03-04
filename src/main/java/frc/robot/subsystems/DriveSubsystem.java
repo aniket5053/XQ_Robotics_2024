@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.kauailabs.navx.frc.AHRS;         //NavX code
 import edu.wpi.first.wpilibj.DriverStation;
@@ -70,11 +71,22 @@ public class DriveSubsystem extends SubsystemBase {
     // gearbox is constructed, you might have to invert the left side instead.
     m_rightLeader.setInverted(true);
 
+    m_leftLeader.setSmartCurrentLimit(40);
+    m_leftFollower.setSmartCurrentLimit(40);
+    m_rightLeader.setSmartCurrentLimit(40);
+    m_rightFollower.setSmartCurrentLimit(40);
+
+
 
     // Sets the distance per pulse for the encoders
     m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
     m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
   }
+
+  @Override
+    public void periodic() {
+       log();
+    }
 
   /**
    * Drives the robot using arcade controls.
@@ -163,6 +175,34 @@ public class DriveSubsystem extends SubsystemBase {
     builder.addDoubleProperty("rightDistance", m_rightEncoder::getDistance, null);
   }
 
+  public double getLeftDistance(){
+    return m_leftEncoder.getDistance();
+  }
+  public double getRightDistance(){
+    return m_rightEncoder.getDistance();
+  }
+
+  public void setCoastMode() {
+    m_leftLeader.setIdleMode(CANSparkMax.IdleMode.kCoast);
+    m_leftFollower.setIdleMode(CANSparkMax.IdleMode.kCoast);
+    m_rightLeader.setIdleMode(CANSparkMax.IdleMode.kCoast);
+    m_rightFollower.setIdleMode(CANSparkMax.IdleMode.kCoast);
+  }
+
+  public void setBreakMode() {
+    m_leftLeader.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    m_leftFollower.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    m_rightLeader.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    m_rightFollower.setIdleMode(CANSparkMax.IdleMode.kBrake);
+  }
+
+  public void log(){
+    SmartDashboard.putNumber("Gyro Angle", getRightDistance());
+    SmartDashboard.putNumber("Gyro Heading", getHeading());
+    SmartDashboard.putNumber("leftDistance", getLeftDistance());
+    SmartDashboard.putNumber("rightDistance", getLeftDistance());
+
+  }
  
 
 

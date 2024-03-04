@@ -51,4 +51,12 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
 
   }
+
+  public void setCoastMode() {
+    m_intake.setIdleMode(CANSparkMax.IdleMode.kCoast);
+  }
+
+  public void setBreakMode() {
+    m_intake.setIdleMode(CANSparkMax.IdleMode.kBrake);
+  }
 }

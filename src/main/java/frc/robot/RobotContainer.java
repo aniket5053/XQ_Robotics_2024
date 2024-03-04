@@ -33,16 +33,16 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
 
   // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private final IntakeSubsystem m_intake = new IntakeSubsystem();
-  private final Shooter m_shooter = new Shooter();
+  final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  final IntakeSubsystem m_intake = new IntakeSubsystem();
+  final Shooter m_shooter = new Shooter();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
 
 
-  private final Command simpleAuto = Autos.simpleAuto(m_robotDrive);
-  private final Command complexAuto = Autos.complexAuto(m_robotDrive);
+  final Command simpleAuto = Autos.simpleAuto(m_robotDrive);
+  final Command complexAuto = Autos.complexAuto(m_robotDrive);
   // A chooser for autonomous commands
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -53,6 +53,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    
     
 
     // Configure default commands
@@ -71,7 +73,8 @@ public class RobotContainer {
      m_chooser.addOption("Complex Auto", complexAuto);
 
      // Put the chooser on the dashboard
-    Shuffleboard.getTab("Autonomous").add(m_chooser);
+    SmartDashboard.putData("Auto Chooser", m_chooser);
+    SmartDashboard.putData(m_robotDrive);
 
     //SmartDashboard.putNumber("angle", getAngle);
     //SmartDashboard.putNumber("heading", getHeading);
@@ -102,13 +105,15 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kB.value)
         .onTrue(new TurnToAngleProfiled(-90, m_robotDrive).withTimeout(5));
 
-    
+    // Intake note with harvestor
     new JoystickButton(m_operatorController, Button.kB.value)
     .whileTrue(new IntakeNote(m_intake));
 
+    //Take out stuck note (FOR TESTING ONLY)
     new JoystickButton(m_operatorController, Button.kX.value)
     .whileTrue(new EjectNote(m_intake));
 
+    //Shoot note
     new JoystickButton(m_operatorController, Button.kA.value)
     .whileTrue(new ShootNote(m_shooter));
       
