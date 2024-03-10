@@ -98,7 +98,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @param rot the commanded rotation
    */
   public void arcadeDrive(double rot, double fwd) {
-    m_drive.arcadeDrive(rot, fwd);
+    m_drive.arcadeDrive(fwd, rot);
   }
 
   /** Resets the drive encoders to currently read a position of 0. */
