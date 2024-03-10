@@ -82,14 +82,9 @@ public class DriveSubsystem extends SubsystemBase {
 
 
     // Sets the distance per pulse for the encoders
-    m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
-    m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+    // m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+    // m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
   }
-
-  @Override
-    public void periodic() {
-       log();
-    }
 
   /**
    * Drives the robot using arcade controls.
@@ -171,23 +166,6 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
 
-  public void log(){
-    SmartDashboard.putNumber("leftDistance", m_leftEncoder.getPosition());
-        SmartDashboard.putNumber("rightDistance", m_rightEncoder.getPosition());
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    log();
-  }
-
-  public double getLeftDistance(){
-    return m_leftEncoder.getDistance();
-  }
-  public double getRightDistance(){
-    return m_rightEncoder.getDistance();
-  }
 
   public void setCoastMode() {
     m_leftLeader.setIdleMode(CANSparkMax.IdleMode.kCoast);
@@ -203,12 +181,19 @@ public class DriveSubsystem extends SubsystemBase {
     m_rightFollower.setIdleMode(CANSparkMax.IdleMode.kBrake);
   }
 
-  public void log(){
-    SmartDashboard.putNumber("Gyro Angle", getRightDistance());
-    SmartDashboard.putNumber("Gyro Heading", getHeading());
-    SmartDashboard.putNumber("leftDistance", getLeftDistance());
-    SmartDashboard.putNumber("rightDistance", getLeftDistance());
 
+  public void log(){
+    SmartDashboard.putNumber("Gyro Angle", getGyroAngle());
+    SmartDashboard.putNumber("Gyro Heading", getHeading());
+    SmartDashboard.putNumber("leftDistance", m_leftEncoder.getPosition());
+    SmartDashboard.putNumber("rightDistance", m_rightEncoder.getPosition());
+
+  }
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+    log();
   }
  
 
