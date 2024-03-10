@@ -47,10 +47,10 @@ public class Elbow extends SubsystemBase {
     m_rightElbow.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, ElbowConstants.kForwardSoftLimit);
 
 
-    //m_rightElbow.setSmartCurrentLimit(40);
-    //m_leftElbow.setSmartCurrentLimit(40);
-    //m_leftElbow.setIdleMode(CANSparkMax.IdleMode.kBrake);
-    //m_rightElbow.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    m_rightElbow.setSmartCurrentLimit(40);
+    m_leftElbow.setSmartCurrentLimit(40);
+    m_leftElbow.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    m_rightElbow.setIdleMode(CANSparkMax.IdleMode.kBrake);
 
 
   }
