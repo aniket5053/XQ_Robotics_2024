@@ -11,11 +11,11 @@ public class Autos {
         // Reset encoders on command start
         drive::resetEncoders,
         // Drive forward while the command is executing
-        () -> drive.arcadeDrive(90, 0),
+        () -> drive.arcadeDrive(0,900),
         // Stop driving at the end of the command
         interrupt -> drive.arcadeDrive(0, 0),
         // End the command when the robot's driven distance exceeds the desired value
-        () -> drive.getAverageEncoderDistance() >= 60,
+        () -> drive.getRightEncoder() >= 60,
         // Require the drive subsystem
         drive);
   }

@@ -9,6 +9,10 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Elbow;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -50,15 +54,21 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    m_robotContainer.m_elbow.setBrakeMode();
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    m_robotContainer.m_elbow.setBrakeMode();
+
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_robotContainer.m_elbow.setBrakeMode();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -68,7 +78,10 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+        m_robotContainer.m_elbow.setBrakeMode();
+
+  }
 
   @Override
   public void teleopInit() {
@@ -76,14 +89,20 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+        m_robotContainer.m_elbow.setBrakeMode();
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+        m_robotContainer.m_elbow.setCoastMode();
+
+  }
 
   @Override
   public void testInit() {

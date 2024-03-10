@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.kauailabs.navx.frc.AHRS;         //NavX code
 import edu.wpi.first.wpilibj.DriverStation;
@@ -37,19 +38,22 @@ public class DriveSubsystem extends SubsystemBase {
   private final DifferentialDrive m_drive =
       new DifferentialDrive(m_leftLeader::set, m_rightLeader::set);
 
+      public RelativeEncoder  m_leftEncoder = m_leftLeader.getEncoder();
+      public RelativeEncoder  m_rightEncoder = m_rightLeader.getEncoder();
+    
   // The left-side drive encoder
-  private final Encoder m_leftEncoder =
-      new Encoder(
-          DriveConstants.kLeftEncoderPorts[0],
-          DriveConstants.kLeftEncoderPorts[1],
-          DriveConstants.kLeftEncoderReversed);
+  // private final Encoder m_leftEncoder =
+  //     new Encoder(
+  //         DriveConstants.kLeftEncoderPorts[0],
+  //         DriveConstants.kLeftEncoderPorts[1],
+  //         DriveConstants.kLeftEncoderReversed);
 
-  // The right-side drive encoder
-  private final Encoder m_rightEncoder =
-      new Encoder(
-          DriveConstants.kRightEncoderPorts[0],
-          DriveConstants.kRightEncoderPorts[1],
-          DriveConstants.kRightEncoderReversed);
+  // // The right-side drive encoder
+  // private final Encoder m_rightEncoder =
+  //     new Encoder(
+  //         DriveConstants.kRightEncoderPorts[0],
+  //         DriveConstants.kRightEncoderPorts[1],
+  //         DriveConstants.kRightEncoderReversed);
 
   // The gyro sensor
    public AHRS m_gyro = new AHRS(SPI.Port.kMXP);
@@ -72,9 +76,9 @@ public class DriveSubsystem extends SubsystemBase {
 
 
     // Sets the distance per pulse for the encoders
-    m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
-    m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
-  }
+  //   m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+  //   m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+   }
 
   /**
    * Drives the robot using arcade controls.
@@ -88,8 +92,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Resets the drive encoders to currently read a position of 0. */
   public void resetEncoders() {
-    m_leftEncoder.reset();
-    m_rightEncoder.reset();
+    m_leftEncoder.setPosition(0);
+    m_rightEncoder.setPosition(0);
   }
 
   /**
@@ -98,7 +102,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the average of the two encoder readings
    */
   public double getAverageEncoderDistance() {
-    return (m_leftEncoder.getDistance() + m_rightEncoder.getDistance()) / 2.0;
+    return ((double)m_leftEncoder.getPosition() +(double)m_rightEncoder.getPosition()) / 2.0;
   }
 
   /**
@@ -106,8 +110,8 @@ public class DriveSubsystem extends SubsystemBase {
    *
    * @return the left drive encoder
    */
-  public Encoder getLeftEncoder() {
-    return m_leftEncoder;
+  public double getLeftEncoder() {
+    return m_leftEncoder.getPosition();
   }
 
   /**
@@ -115,8 +119,8 @@ public class DriveSubsystem extends SubsystemBase {
    *
    * @return the right drive encoder
    */
-  public Encoder getRightEncoder() {
-    return m_rightEncoder;
+  public double getRightEncoder() {
+    return m_rightEncoder.getPosition();
   }
 
   /**
@@ -155,14 +159,17 @@ public class DriveSubsystem extends SubsystemBase {
     return m_gyro.getAngle();
   }
 
-   @Override
-  public void initSendable(SendableBuilder builder) {
-    super.initSendable(builder);
-    // Publish encoder distances to telemetry.
-    builder.addDoubleProperty("leftDistance", m_leftEncoder::getDistance, null);
-    builder.addDoubleProperty("rightDistance", m_rightEncoder::getDistance, null);
+
+  public void log(){
+    SmartDashboard.putNumber("leftDistance", m_leftEncoder.getPosition());
+        SmartDashboard.putNumber("rightDistance", m_rightEncoder.getPosition());
   }
 
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+    log();
+  }
  
 
 

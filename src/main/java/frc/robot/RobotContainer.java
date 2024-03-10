@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Elbow;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.math.controller.PIDController;
@@ -36,6 +37,7 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final IntakeSubsystem m_intake = new IntakeSubsystem();
   private final Shooter m_shooter = new Shooter();
+  public  Elbow m_elbow = new Elbow();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
@@ -62,8 +64,16 @@ public class RobotContainer {
         // hand, and turning controlled by the right.
         new DefaultDrive(
             m_robotDrive,
-            () -> -m_driverController.getLeftY() ,
-            () -> -m_driverController.getRightX()));
+            () -> m_driverController.getRightX() ,
+            () -> m_driverController.getLeftY()));
+
+    
+            new JoystickButton(m_operatorController, Button.kLeftBumper.value).debounce(1)
+            .onTrue(
+              new ElbowManual(
+              m_elbow, 
+              () -> m_operatorController.getLeftY())
+    );
 
 
   
@@ -71,7 +81,9 @@ public class RobotContainer {
      m_chooser.addOption("Complex Auto", complexAuto);
 
      // Put the chooser on the dashboard
-    Shuffleboard.getTab("Autonomous").add(m_chooser);
+     SmartDashboard.putData("Autonomous", m_chooser);
+     SmartDashboard.putData(m_elbow);
+     SmartDashboard.putData(m_robotDrive);
 
     //SmartDashboard.putNumber("angle", getAngle);
     //SmartDashboard.putNumber("heading", getHeading);
@@ -92,7 +104,7 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kRightBumper.value)
         .onTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(0.5)))
         .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(1)));
-
+    
 
     // Turn to 90 degrees when the 'A' button is pressed, with a 5 second timeout
     new JoystickButton(m_driverController, Button.kA.value)
@@ -111,6 +123,9 @@ public class RobotContainer {
 
     new JoystickButton(m_operatorController, Button.kA.value)
     .whileTrue(new ShootNote(m_shooter));
+
+    // new JoystickButton(m_operatorController, Button.kRightBumper.value)
+    // .whileTrue(new ElbowSpeakerWoofer(m_elbow, m_shooter, m_intake));
       
   }
 

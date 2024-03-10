@@ -72,4 +72,23 @@ public final class Constants {
     public static final double shooterSpeed = 0.5;
     public static final double ejectSpeed = -0.5;
   }
+
+  public static final class ElbowConstants{
+    public static final int k_leftElbowPort = 20;
+    public static final int k_rightElbowPort = 21;
+
+    public static final double upSpeed = 0.5;
+    public static final double downSpeed = -0.2;
+
+    public static float kReverseSoftLimit = -1;
+    public static float kForwardSoftLimit = 36;
+
+    public static final double smallDegrees = 1;
+    public static final double kMaxAngle = (kForwardSoftLimit-2);
+
+    public static final double kScoreInSpeakerAngleWoofer = 20.0;        
+
+
+
+  }
 }
