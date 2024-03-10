@@ -38,14 +38,19 @@ public class Shooter extends SubsystemBase {
   }
 
   public void shootNote(){
-    m_topShooter.set(ShooterConstants.shooterSpeed);
-    m_bottomShooter.set(ShooterConstants.shooterSpeed);
+    m_topShooter.set(ShooterConstants.shooterTopSpeed);
+    m_bottomShooter.set(ShooterConstants.shooterBottomSpeed);
   }
 
   public void ejectNote(){
         m_topShooter.set(ShooterConstants.ejectSpeed);
        m_bottomShooter.set(ShooterConstants.ejectSpeed);
 
+  }
+
+  public void ampNote(){
+       m_topShooter.set(ShooterConstants.ampSpeed);
+       m_bottomShooter.set(ShooterConstants.ampSpeed);
   }
 
   public void stop(){
@@ -57,5 +62,15 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public void setCoastMode() {
+    m_topShooter.setIdleMode(CANSparkMax.IdleMode.kCoast);
+    m_bottomShooter.setIdleMode(CANSparkMax.IdleMode.kCoast);
+  }
+
+  public void setBreakMode() {
+    m_topShooter.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    m_bottomShooter.setIdleMode(CANSparkMax.IdleMode.kBrake);
   }
 }

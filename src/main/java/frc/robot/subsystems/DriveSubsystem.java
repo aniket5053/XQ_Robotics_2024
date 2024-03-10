@@ -74,11 +74,22 @@ public class DriveSubsystem extends SubsystemBase {
     // gearbox is constructed, you might have to invert the left side instead.
     m_rightLeader.setInverted(true);
 
+    m_leftLeader.setSmartCurrentLimit(40);
+    m_leftFollower.setSmartCurrentLimit(40);
+    m_rightLeader.setSmartCurrentLimit(40);
+    m_rightFollower.setSmartCurrentLimit(40);
+
+
 
     // Sets the distance per pulse for the encoders
-  //   m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
-  //   m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
-   }
+    m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+    m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+  }
+
+  @Override
+    public void periodic() {
+       log();
+    }
 
   /**
    * Drives the robot using arcade controls.
@@ -169,6 +180,35 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     log();
+  }
+
+  public double getLeftDistance(){
+    return m_leftEncoder.getDistance();
+  }
+  public double getRightDistance(){
+    return m_rightEncoder.getDistance();
+  }
+
+  public void setCoastMode() {
+    m_leftLeader.setIdleMode(CANSparkMax.IdleMode.kCoast);
+    m_leftFollower.setIdleMode(CANSparkMax.IdleMode.kCoast);
+    m_rightLeader.setIdleMode(CANSparkMax.IdleMode.kCoast);
+    m_rightFollower.setIdleMode(CANSparkMax.IdleMode.kCoast);
+  }
+
+  public void setBreakMode() {
+    m_leftLeader.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    m_leftFollower.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    m_rightLeader.setIdleMode(CANSparkMax.IdleMode.kBrake);
+    m_rightFollower.setIdleMode(CANSparkMax.IdleMode.kBrake);
+  }
+
+  public void log(){
+    SmartDashboard.putNumber("Gyro Angle", getRightDistance());
+    SmartDashboard.putNumber("Gyro Heading", getHeading());
+    SmartDashboard.putNumber("leftDistance", getLeftDistance());
+    SmartDashboard.putNumber("rightDistance", getLeftDistance());
+
   }
  
 

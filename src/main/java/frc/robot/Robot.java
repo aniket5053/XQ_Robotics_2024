@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,16 +26,26 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
+
+   
   @Override
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    // Setup Port Forwarding to enable Limelight communication while tethered to your robot over USB.
+    // Forward ports 5800, 5801, 5802, 5803, 5804, 5805, 5806, and 5807
+    for (int port = 5800; port <= 5807; port++) {
+      PortForwarder.add(port, "limelight.local", port);
+    }
   }
+
 
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
@@ -55,12 +66,18 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    m_robotContainer.m_elbow.setBrakeMode();
+
+    m_robotContainer.m_robotDrive.setCoastMode();
+    m_robotContainer.m_intake.setCoastMode();
+    m_robotContainer.m_shooter.setCoastMode();
+
   }
 
   @Override
   public void disabledPeriodic() {
-    m_robotContainer.m_elbow.setBrakeMode();
+    m_robotContainer.m_robotDrive.setCoastMode();
+    m_robotContainer.m_intake.setCoastMode();
+    m_robotContainer.m_shooter.setCoastMode();
 
   }
 
@@ -79,12 +96,19 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-        m_robotContainer.m_elbow.setBrakeMode();
+    m_robotContainer.m_robotDrive.setBreakMode();
+    m_robotContainer.m_intake.setBreakMode();
+    m_robotContainer.m_shooter.setBreakMode();
 
   }
 
   @Override
   public void teleopInit() {
+
+    m_robotContainer.m_robotDrive.setBreakMode();
+    m_robotContainer.m_intake.setBreakMode();
+    m_robotContainer.m_shooter.setBreakMode();
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -100,7 +124,10 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-        m_robotContainer.m_elbow.setCoastMode();
+    m_robotContainer.m_robotDrive.setBreakMode();
+    m_robotContainer.m_intake.setBreakMode();
+    m_robotContainer.m_shooter.setBreakMode();
+
 
   }
 

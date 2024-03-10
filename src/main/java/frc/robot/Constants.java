@@ -69,8 +69,10 @@ public final class Constants {
   public static final class ShooterConstants{
     public static final int k_TopShooterPort = 11;
     public static final int k_BottomShooterPort = 12;
-    public static final double shooterSpeed = 0.5;
+    public static final double shooterTopSpeed = 0.9;
+    public static final double shooterBottomSpeed = 0.3;
     public static final double ejectSpeed = -0.5;
+    public static final double ampSpeed = 0.25;
   }
 
   public static final class ElbowConstants{

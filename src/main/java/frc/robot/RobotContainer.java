@@ -43,8 +43,8 @@ public class RobotContainer {
   XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
 
 
-  private final Command simpleAuto = Autos.simpleAuto(m_robotDrive);
-  private final Command complexAuto = Autos.complexAuto(m_robotDrive);
+  final Command simpleAuto = Autos.simpleAuto(m_robotDrive);
+  final Command complexAuto = Autos.complexAuto(m_robotDrive);
   // A chooser for autonomous commands
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -55,6 +55,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    
     
 
     // Configure default commands
@@ -114,13 +116,15 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kB.value)
         .onTrue(new TurnToAngleProfiled(-90, m_robotDrive).withTimeout(5));
 
-    
+    // Intake note with harvestor
     new JoystickButton(m_operatorController, Button.kB.value)
     .whileTrue(new IntakeNote(m_intake));
 
+    //Take out stuck note (FOR TESTING ONLY)
     new JoystickButton(m_operatorController, Button.kX.value)
     .whileTrue(new EjectNote(m_intake));
 
+    //Shoot note
     new JoystickButton(m_operatorController, Button.kA.value)
     .whileTrue(new ShootNote(m_shooter));
 
