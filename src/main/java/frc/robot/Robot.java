@@ -70,6 +70,7 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_robotDrive.setCoastMode();
     m_robotContainer.m_intake.setCoastMode();
     m_robotContainer.m_shooter.setCoastMode();
+    m_robotContainer.m_elbow.setBrakeMode();
 
   }
 
@@ -78,6 +79,8 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_robotDrive.setCoastMode();
     m_robotContainer.m_intake.setCoastMode();
     m_robotContainer.m_shooter.setCoastMode();
+    m_robotContainer.m_elbow.setBrakeMode();
+
 
   }
 
@@ -99,6 +102,8 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_robotDrive.setBreakMode();
     m_robotContainer.m_intake.setBreakMode();
     m_robotContainer.m_shooter.setBreakMode();
+    m_robotContainer.m_elbow.setBrakeMode();
+
 
   }
 
@@ -113,7 +118,7 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-        m_robotContainer.m_elbow.setBrakeMode();
+      m_robotContainer.m_elbow.setBrakeMode();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
@@ -127,6 +132,8 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_robotDrive.setBreakMode();
     m_robotContainer.m_intake.setBreakMode();
     m_robotContainer.m_shooter.setBreakMode();
+    m_robotContainer.m_elbow.setBrakeMode();
+
 
 
   }

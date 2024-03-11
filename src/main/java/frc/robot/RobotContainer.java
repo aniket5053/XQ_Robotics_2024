@@ -34,9 +34,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
 
   // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private final IntakeSubsystem m_intake = new IntakeSubsystem();
-  private final Shooter m_shooter = new Shooter();
+  public final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  public final IntakeSubsystem m_intake = new IntakeSubsystem();
+  public final Shooter m_shooter = new Shooter();
   public  Elbow m_elbow = new Elbow();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -74,7 +74,10 @@ public class RobotContainer {
             .onTrue(
               new ElbowManual(
               m_elbow, 
-              () -> m_operatorController.getLeftY()));
+              // If polarity is reversed use this:
+              //() -> -m_operatorController.getLeftY())
+              () -> m_operatorController.getLeftY())
+    );
 
 
   
