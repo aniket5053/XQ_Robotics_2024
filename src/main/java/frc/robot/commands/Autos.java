@@ -15,7 +15,7 @@ public class Autos {
         // Stop driving at the end of the command
         interrupt -> drive.tankDrive(0, 0),
         // End the command when the robot's driven distance exceeds the desired value
-        () -> drive.getRightEncoder() >= 60,
+        () -> drive.getAverageEncoderDistance() >= 60,
         // Require the drive subsystem
         drive);
   }
