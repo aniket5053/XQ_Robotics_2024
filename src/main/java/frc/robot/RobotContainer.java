@@ -60,8 +60,8 @@ public class RobotContainer {
         // hand, and turning controlled by the right.
         new DefaultDrive(
             m_robotDrive,
-            () -> m_driverController.getLeftY() ,
-            () -> m_driverController.getRightY()));
+            () -> -m_driverController.getLeftY() ,
+            () -> -m_driverController.getRightY()));
 
     
        new JoystickButton(m_operatorController, Button.kLeftBumper.value).debounce(1)
@@ -69,8 +69,8 @@ public class RobotContainer {
               new ElbowManual(
               m_elbow, 
               // If polarity is reversed use this:
-              //() -> -m_operatorController.getLeftY())
-              () -> m_operatorController.getLeftY())
+              () -> -m_operatorController.getLeftY())
+              //() -> m_operatorController.getLeftY())
     );
 
 
@@ -126,11 +126,11 @@ public class RobotContainer {
 
     //Shoot subwoofer
     new JoystickButton(m_operatorController, Button.kY.value)
-    .whileFalse(new ElbowSpeakerWoofer(m_elbow, m_shooter, m_intake));
+    .whileTrue(new ElbowSpeakerWoofer(m_elbow, m_shooter, m_intake));
 
     //amp top D-Pad Button
     new POVButton(m_operatorController, 0)
-    .whileFalse(new ElbowAmp(m_elbow, m_shooter, m_intake));
+    .whileTrue(new ElbowAmp(m_elbow, m_shooter, m_intake));
 
     // new JoystickButton(m_operatorController, Button.kRightBumper.value)
     // .whileTrue(new ElbowSpeakerWoofer(m_elbow, m_shooter, m_intake));

@@ -30,17 +30,17 @@ public class ElbowSpeakerWoofer extends Command {
   
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
+  public void initialize() {
     m_shooter.shootNote();
     Timer.delay(0.5);
     m_elbow.elbowSpeakerWoofer();
     Timer.delay(0.5);
-    m_intake.ejectNote();
+    m_intake.getNote();
+  }
 
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
   }
 
   // Called once the command ends or is interrupted.
