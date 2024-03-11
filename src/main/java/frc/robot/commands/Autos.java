@@ -13,7 +13,7 @@ public class Autos {
         // Drive forward while the command is executing
         () -> drive.tankDrive(90,90),
         // Stop driving at the end of the command
-        interrupt -> drive.arcadeDrive(0, 0),
+        interrupt -> drive.tankDrive(0, 0),
         // End the command when the robot's driven distance exceeds the desired value
         () -> drive.getRightEncoder() >= 60,
         // Require the drive subsystem
