@@ -16,8 +16,8 @@ import frc.robot.subsystems.DriveSubsystem;
  */
 public class DefaultDrive extends Command {
   private final DriveSubsystem m_drive;
-  private final DoubleSupplier m_forward;
-  private final DoubleSupplier m_rotation;
+  private final DoubleSupplier m_left;
+  private final DoubleSupplier m_right;
 
   /**
    * Creates a new DefaultDrive.
@@ -26,15 +26,15 @@ public class DefaultDrive extends Command {
    * @param forward The control input for driving forwards/backwards
    * @param rotation The control input for turning
    */
-  public DefaultDrive(DriveSubsystem subsystem, DoubleSupplier forward, DoubleSupplier rotation) {
+  public DefaultDrive(DriveSubsystem subsystem, DoubleSupplier left, DoubleSupplier right) {
     m_drive = subsystem;
-    m_forward = forward;
-    m_rotation = rotation;
+    m_left = left;
+    m_right = right;
     addRequirements(m_drive);
   }
 
   @Override
   public void execute() {
-    m_drive.arcadeDrive(m_forward.getAsDouble(), m_rotation.getAsDouble());
+    m_drive.tankDrive(m_left.getAsDouble(), m_right.getAsDouble());
   }
 }

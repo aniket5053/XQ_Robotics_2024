@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.kauailabs.navx.frc.AHRS;         //NavX code
 import edu.wpi.first.wpilibj.DriverStation;
@@ -66,15 +67,13 @@ public class Elbow extends SubsystemBase {
     m_leftElbow.set(ElbowConstants.upSpeed);
   }
 
-  public void elbowSpeakerWoofer(){
-    m_leftElbowEncoder.setPosition(20);
-    m_rightElbowEncoder.setPosition(20);
 
-  }
 
   public void home(){
-    m_leftElbowEncoder.setPosition(0);
-    m_rightElbowEncoder.setPosition(0);
+    while(getEncoderDegrees() > 0){
+        elbowDown();
+      }
+      controlMove(0);
 
   }
 
@@ -98,7 +97,7 @@ public class Elbow extends SubsystemBase {
   }
 
 
-  public void resetElbowEncoder(){
+  public double resetElbowEncoder(){
     m_leftElbowEncoder.setPosition(0);
     m_rightElbowEncoder.setPosition(0);
   }
@@ -138,6 +137,13 @@ public double getSmallUpAngle() {
           return  ( (m_leftElbowEncoder.getVelocity() < -0.01) && (this.getEncoderDegrees() < ElbowConstants.kReverseSoftLimit)   );
   
       }     
+  
+    public void elbowSpeakerWoofer(){
+      while(getEncoderDegrees() < 20){
+        elbowUp();
+      }
+      controlMove(0);
+    }
  
 
   public void log(){

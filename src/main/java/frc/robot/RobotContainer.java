@@ -67,15 +67,14 @@ public class RobotContainer {
         new DefaultDrive(
             m_robotDrive,
             () -> m_driverController.getLeftY() ,
-            () -> m_driverController.getRightX()));
+            () -> m_driverController.getRightY()));
 
     
-            new JoystickButton(m_operatorController, Button.kLeftBumper.value).debounce(1)
+       new JoystickButton(m_operatorController, Button.kLeftBumper.value).debounce(1)
             .onTrue(
               new ElbowManual(
               m_elbow, 
-              () -> m_operatorController.getLeftY())
-    );
+              () -> m_operatorController.getLeftY()));
 
 
   
