@@ -131,7 +131,7 @@ public double getSmallUpAngle() {
     }
 
     public void elbowAmp(){
-      while(getEncoderDegrees() < 30){
+      while(getEncoderDegrees() < 34){
         elbowUp();
       }
       controlMove(0);
