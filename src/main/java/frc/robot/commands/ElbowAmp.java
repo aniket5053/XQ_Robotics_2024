@@ -36,6 +36,7 @@ public class ElbowAmp extends Command {
     m_elbow.elbowAmp();
     Timer.delay(0.5);
     m_intake.getNote();
+    Timer.delay(1);
   }
 
   // Called once the command ends or is interrupted.
