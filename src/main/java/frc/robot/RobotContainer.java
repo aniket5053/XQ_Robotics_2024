@@ -60,8 +60,8 @@ public class RobotContainer {
         // hand, and turning controlled by the right.
         new DefaultDrive(
             m_robotDrive,
-            () -> -m_driverController.getLeftX() ,
-            () -> m_driverController.getRightY()));
+            () -> -m_driverController.getLeftY() ,
+            () -> m_driverController.getRightX()));
 
     
        new JoystickButton(m_operatorController, Button.kLeftBumper.value).debounce(1)
