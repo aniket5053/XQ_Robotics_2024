@@ -124,7 +124,7 @@ public double getSmallUpAngle() {
       }     
   
     public void elbowSpeakerWoofer(){
-      while(getEncoderDegrees() < 20){
+      while(getEncoderDegrees() < 10){
         elbowUp();
       }
       controlMove(0);
