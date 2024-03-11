@@ -130,6 +130,10 @@ public class RobotContainer {
     new JoystickButton(m_operatorController, Button.kA.value)
     .whileTrue(new ShootNote(m_shooter));
 
+    //Shoot subwoofer
+    new JoystickButton(m_operatorController, Button.kY.value)
+    .whileFalse(new ElbowSpeakerWoofer(m_elbow, m_shooter, m_intake));
+
     // new JoystickButton(m_operatorController, Button.kRightBumper.value)
     // .whileTrue(new ElbowSpeakerWoofer(m_elbow, m_shooter, m_intake));
       
