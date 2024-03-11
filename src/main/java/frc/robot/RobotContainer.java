@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -126,6 +127,10 @@ public class RobotContainer {
     //Shoot subwoofer
     new JoystickButton(m_operatorController, Button.kY.value)
     .whileFalse(new ElbowSpeakerWoofer(m_elbow, m_shooter, m_intake));
+
+    //amp top D-Pad Button
+    new POVButton(m_operatorController, 0)
+    .whileFalse(new ElbowAmp(m_elbow, m_shooter, m_intake));
 
     // new JoystickButton(m_operatorController, Button.kRightBumper.value)
     // .whileTrue(new ElbowSpeakerWoofer(m_elbow, m_shooter, m_intake));
