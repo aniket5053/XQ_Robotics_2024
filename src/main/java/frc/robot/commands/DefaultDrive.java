@@ -35,6 +35,6 @@ public class DefaultDrive extends Command {
 
   @Override
   public void execute() {
-    m_drive.tankDrive(m_left.getAsDouble(), m_right.getAsDouble());
+    m_drive.tankDrive(-m_left.getAsDouble(), -m_right.getAsDouble());
   }
 }
