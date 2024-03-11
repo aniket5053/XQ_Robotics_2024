@@ -11,7 +11,7 @@ public class Autos {
         // Reset encoders on command start
         drive::resetEncoders,
         // Drive forward while the command is executing
-        () -> drive.tankDrive(90,90),
+        () -> drive.tankDrive(-90,-90),
         // Stop driving at the end of the command
         interrupt -> drive.tankDrive(0, 0),
         // End the command when the robot's driven distance exceeds the desired value
