@@ -32,7 +32,7 @@ public class ElbowSpeakerWoofer extends Command {
   @Override
   public void initialize() {
     m_shooter.shootNote();
-    Timer.delay(0.5);
+    Timer.delay(0.75);
     m_elbow.elbowSpeakerWoofer();
     Timer.delay(0.5);
     m_intake.getNote();
