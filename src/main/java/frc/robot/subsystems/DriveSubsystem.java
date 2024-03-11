@@ -27,25 +27,11 @@ public class DriveSubsystem extends SubsystemBase {
 
   // The robot's drive
   private final DifferentialDrive m_drive =
-      new DifferentialDrive(m_leftLeader::set, m_rightLeader::set);
+      new DifferentialDrive(m_leftLeader, m_rightLeader);
 
       public RelativeEncoder  m_leftEncoder = m_leftLeader.getEncoder();
       public RelativeEncoder  m_rightEncoder = m_rightLeader.getEncoder();
     
-  // The left-side drive encoder
-  // private final Encoder m_leftEncoder =
-  //     new Encoder(
-  //         DriveConstants.kLeftEncoderPorts[0],
-  //         DriveConstants.kLeftEncoderPorts[1],
-  //         DriveConstants.kLeftEncoderReversed);
-
-  // // The right-side drive encoder
-  // private final Encoder m_rightEncoder =
-  //     new Encoder(
-  //         DriveConstants.kRightEncoderPorts[0],
-  //         DriveConstants.kRightEncoderPorts[1],
-  //         DriveConstants.kRightEncoderReversed);
-
   // The gyro sensor
    public AHRS m_gyro = new AHRS(SPI.Port.kMXP);
    
