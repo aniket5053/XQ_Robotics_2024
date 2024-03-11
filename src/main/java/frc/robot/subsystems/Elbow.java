@@ -10,25 +10,10 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.SparkPIDController;
 
 
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.util.sendable.SendableRegistry;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorController;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.kauailabs.navx.frc.AHRS;         //NavX code
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.SPI;           //NavX code
+import edu.wpi.first.wpilibj2.command.SubsystemBase;          
 import frc.robot.Constants.ElbowConstants;
-import frc.robot.Constants.ElbowConstants.*;
 
 public class Elbow extends SubsystemBase {
   public final CANSparkMax m_leftElbow = new CANSparkMax(ElbowConstants.k_leftElbowPort, MotorType.kBrushless);
@@ -97,7 +82,7 @@ public class Elbow extends SubsystemBase {
   }
 
 
-  public double resetElbowEncoder(){
+  public void resetElbowEncoder(){
     m_leftElbowEncoder.setPosition(0);
     m_rightElbowEncoder.setPosition(0);
   }
