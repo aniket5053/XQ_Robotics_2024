@@ -51,10 +51,11 @@ public class DriveSubsystem extends SubsystemBase {
     // gearbox is constructed, you might have to invert the left side instead.
     m_rightLeader.setInverted(true);
 
-    m_leftLeader.setSmartCurrentLimit(40);
-    m_leftFollower.setSmartCurrentLimit(40);
-    m_rightLeader.setSmartCurrentLimit(40);
-    m_rightFollower.setSmartCurrentLimit(40);
+    m_leftLeader.setSmartCurrentLimit(60);
+    m_leftFollower.setSmartCurrentLimit(60);
+    m_rightLeader.setSmartCurrentLimit(60);
+    m_rightFollower.setSmartCurrentLimit(60);
+
 
 
 
