@@ -8,6 +8,8 @@ import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.ElbowPID;
+import frc.robot.subsystems.Elbow;
 
 
 /**
@@ -20,6 +22,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  private Elbow m_elbow;
 
 
   /**
@@ -33,6 +36,11 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    //new ElbowPID(m_elbow, 0, 0.0);
+
+
+    m_robotContainer.m_elbow.setBrakeMode();
+    m_robotContainer.m_elbow.setBrakeMode();
 
     // Setup Port Forwarding to enable Limelight communication while tethered to your robot over USB.
     // Forward ports 5800, 5801, 5802, 5803, 5804, 5805, 5806, and 5807
@@ -65,7 +73,10 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_robotDrive.setCoastMode();
     m_robotContainer.m_intake.setCoastMode();
     m_robotContainer.m_shooter.setCoastMode();
-    m_robotContainer.m_elbow.setBrakeMode();
+    m_robotContainer.m_elbow.setBrakeMode();   
+     m_robotContainer.m_elbow.setBrakeMode();
+
+    //new ElbowPID(m_elbow, 0, 0.0);
 
   }
 
@@ -75,6 +86,9 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_intake.setCoastMode();
     m_robotContainer.m_shooter.setCoastMode();
     m_robotContainer.m_elbow.setBrakeMode();
+    m_robotContainer.m_elbow.setBrakeMode();
+
+  
 
 
   }
@@ -82,8 +96,13 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    //m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     m_robotContainer.m_elbow.setBrakeMode();
+     m_robotContainer.m_elevator.setBrakeMode();
+
+    //new ElbowPID(m_elbow, 0, 0.0);
+
+    
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -98,6 +117,8 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_intake.setBreakMode();
     m_robotContainer.m_shooter.setBreakMode();
     m_robotContainer.m_elbow.setBrakeMode();
+     m_robotContainer.m_elevator.setBrakeMode();
+
 
 
   }
@@ -108,12 +129,16 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_robotDrive.setBreakMode();
     m_robotContainer.m_intake.setBreakMode();
     m_robotContainer.m_shooter.setBreakMode();
+    m_robotContainer.m_elbow.setBrakeMode();
+    m_robotContainer.m_elevator.setBrakeMode();
 
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-      m_robotContainer.m_elbow.setBrakeMode();
+
+
+    // // This makes sure that the autonomous stops running when
+    // // teleop starts running. If you want the autonomous to
+    // // continue until interrupted by another command, remove
+    // // this line or comment it out.
+    //   m_robotContainer.m_elbow.setBrakeMode();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
@@ -128,6 +153,8 @@ public class Robot extends TimedRobot {
     m_robotContainer.m_intake.setBreakMode();
     m_robotContainer.m_shooter.setBreakMode();
     m_robotContainer.m_elbow.setBrakeMode();
+     m_robotContainer.m_elevator.setBrakeMode();
+
 
 
 

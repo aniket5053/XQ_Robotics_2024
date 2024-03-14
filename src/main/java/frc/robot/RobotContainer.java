@@ -8,8 +8,11 @@ import frc.robot.Constants.*;
 import frc.robot.commands.*;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Elbow;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.Shooter;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -18,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -32,18 +36,17 @@ public class RobotContainer {
   public final IntakeSubsystem m_intake = new IntakeSubsystem();
   public final Shooter m_shooter = new Shooter();
   public  Elbow m_elbow = new Elbow();
+  public Elevator m_elevator = new Elevator();
+
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   XboxController m_operatorController = new XboxController(OIConstants.kOperatorControllerPort);
 
 
-  final Command simpleAuto = Autos.simpleAuto(m_robotDrive);
-  final Command complexAuto = Autos.complexAuto(m_robotDrive);
-  // A chooser for autonomous commands
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+ // A chooser for autonomous commands
+  private final Command m_simpleAuto = new Autos(m_robotDrive, m_elbow, m_shooter, m_intake);
+    SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-  //double getAngle = m_robotDrive.getGyroAngle();
-  //double getHeading = m_robotDrive.getHeading();
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -55,36 +58,50 @@ public class RobotContainer {
 
     // Configure default commands
     // Set the default drive command to split-stick arcade drive
-   m_robotDrive.setDefaultCommand(
-        // A split-stick arcade command, with forward/backward controlled by the left
-        // hand, and turning controlled by the right.
+    m_robotDrive.setDefaultCommand(
+  //       // A split-stick arcade command, with forward/backward controlled by the left
+  //       // hand, and turning controlled by the right.
+  //       // new DefaultDrive(
+  //       //     m_robotDrive,
+  //       //     () -> -m_driverController.getLeftY() ,
+  //       //     () -> m_driverController.getRightX()));
+
         new DefaultDrive(
             m_robotDrive,
             () -> -m_driverController.getLeftY() ,
-            () -> m_driverController.getRightX() * 0.95));
+            () -> m_driverController.getRightX()));
 
     
-       new JoystickButton(m_operatorController, Button.kLeftBumper.value).debounce(1)
+
+        new JoystickButton(m_operatorController, Button.kLeftBumper.value).debounce(0.1)
             .onTrue(
               new ElbowManual(
               m_elbow, 
               // If polarity is reversed use this:
-              () -> -m_operatorController.getLeftY())
-              //() -> m_operatorController.getLeftY())
+              () -> -m_operatorController.getRightY())
+              //() -> m_operatorController.getLRighteftY())
     );
 
-
+     new JoystickButton(m_driverController, Button.kLeftBumper.value).debounce(0.1)
+            .onTrue(
+              new DefaultDrive(
+            m_robotDrive,
+            () -> m_driverController.getLeftY() ,
+            () -> -m_driverController.getRightX()))
+            .onFalse(new DefaultDrive(
+            m_robotDrive,
+            () -> -m_driverController.getLeftY() ,
+            () -> m_driverController.getRightX()));
   
-     m_chooser.setDefaultOption("Simple Auto", simpleAuto);
-     m_chooser.addOption("Complex Auto", complexAuto);
+  
+
+
 
      // Put the chooser on the dashboard
      SmartDashboard.putData("Autonomous", m_chooser);
-     SmartDashboard.putData(m_elbow);
-     SmartDashboard.putData(m_robotDrive);
-
-    //SmartDashboard.putNumber("angle", getAngle);
-    //SmartDashboard.putNumber("heading", getHeading);
+      m_chooser.setDefaultOption("SimpleAuto", m_simpleAuto);
+      SmartDashboard.putData(m_elbow);
+      SmartDashboard.putData(m_robotDrive);
 
   }
 
@@ -102,35 +119,73 @@ public class RobotContainer {
     new JoystickButton(m_driverController, Button.kRightBumper.value)
         .onTrue(new InstantCommand(() -> m_robotDrive.setMaxOutput(0.5)))
         .onFalse(new InstantCommand(() -> m_robotDrive.setMaxOutput(1)));
-    
+  
+    //Shoot note
+    // new JoystickButton(m_operatorController, 2)
+    // .whileTrue(new ShootNote(m_shooter));
 
-    // Turn to 90 degrees when the 'A' button is pressed, with a 5 second timeout
-    new JoystickButton(m_driverController, Button.kA.value)
-        .onTrue(new TurnToAngle(90, m_robotDrive).withTimeout(5));
+     //Shoot subwoofer
+    new JoystickButton(m_operatorController, Button.kY.value)
+    .onTrue(new ElbowPID(m_elbow, 13, 0.0)
+    .alongWith(new ShootNote(m_shooter))
+    );
 
-    // Turn to -90 degrees with a profile when the 'B' button is pressed, with a 5 second timeout
-    new JoystickButton(m_driverController, Button.kB.value)
-        .onTrue(new TurnToAngleProfiled(-90, m_robotDrive).withTimeout(5));
-
-    // Intake note with harvestor
-    new JoystickButton(m_operatorController, Button.kB.value)
-    .whileTrue(new IntakeNote(m_intake));
-
-    //Take out stuck note (FOR TESTING ONLY)
+    // //Take out stuck note (FOR TESTING ONLY)
     new JoystickButton(m_operatorController, Button.kX.value)
     .whileTrue(new EjectNote(m_intake));
 
-    //Shoot note
-    new JoystickButton(m_operatorController, Button.kA.value)
-    .whileTrue(new ShootNote(m_shooter));
+    // // Intake note with harvestor
+    new JoystickButton(m_operatorController, Button.kB.value)
+    .whileTrue(new IntakeNote(m_intake));
 
-    //Shoot subwoofer
-    new JoystickButton(m_operatorController, Button.kY.value)
-    .whileTrue(new ElbowSpeakerWoofer(m_elbow, m_shooter, m_intake));
+    //defense
+     new POVButton(m_operatorController, 0)
+    .onTrue(new ElbowPID(m_elbow, 30, 0.0)
+    .alongWith(new StopShooter(m_shooter)));
 
-    //amp top D-Pad Button
-    new POVButton(m_operatorController, 0)
-    .whileTrue(new ElbowAmp(m_elbow, m_shooter, m_intake));
+    //home
+     new POVButton(m_operatorController, 180)
+    .onTrue(new ElbowPID(m_elbow, 0, 0.0)
+    .alongWith(new StopShooter(m_shooter)));
+
+  
+
+    new JoystickButton(m_operatorController, Button.kStart.value)
+    .onTrue(new ResetElbow(m_elbow));
+
+    //shoot podium
+     new JoystickButton(m_operatorController, Button.kA.value)
+    .onTrue(new ElbowPID(m_elbow,25 , 0.0)
+    .alongWith(new ShootNote(m_shooter)));
+
+    //amp 
+      new POVButton(m_operatorController, 90)
+    .onTrue(new ElbowPID(m_elbow,40 , 0.0)
+    .alongWith(new ElbowAmp(m_shooter)));
+
+    //climber up
+    new POVButton(m_operatorController, 270)
+    .whileTrue(new climbereasy(m_elevator, 0.75));
+    //.onTrue(new ClimberVeloCmd(m_elevator, ClimberConstants.kUpSpeed));
+
+    //climber down
+      new JoystickButton(m_operatorController, Button.kRightBumper.value)
+          .whileTrue(new climbereasy(m_elevator, -0.75));
+
+      //.onTrue(new ClimberVeloCmd(m_elevator,ClimberConstants.kDownSpeed));
+ 
+            
+  
+
+    
+
+
+    
+
+    
+
+    // new POVButton(m_operatorController, 0)
+    // .whileTrue(new ElbowAmp(m_elbow, m_shooter, m_intake));
 
     // new JoystickButton(m_operatorController, Button.kRightBumper.value)
     // .whileTrue(new ElbowSpeakerWoofer(m_elbow, m_shooter, m_intake));
@@ -143,7 +198,7 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    return m_chooser.getSelected();
-  }
+   public Command getAutonomousCommand() {
+     return m_chooser.getSelected();
+   }
 }

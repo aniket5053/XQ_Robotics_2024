@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
@@ -12,6 +13,8 @@ import frc.robot.Constants.*;
 public class Shooter extends SubsystemBase {
   public CANSparkMax m_topShooter; 
   public CANSparkMax m_bottomShooter ;
+  //public RelativeEncoder  encoder = m_topShooter.getEncoder();
+
   /** Creates a new Shooter. */
   public Shooter() {
      m_topShooter = new CANSparkMax(ShooterConstants.k_TopShooterPort, MotorType.kBrushless);
@@ -25,6 +28,8 @@ public class Shooter extends SubsystemBase {
     m_topShooter.set(ShooterConstants.shooterTopSpeed);
     m_bottomShooter.set(ShooterConstants.shooterBottomSpeed);
   }
+
+  
 
   public void ejectNote(){
         m_topShooter.set(ShooterConstants.ejectSpeed);

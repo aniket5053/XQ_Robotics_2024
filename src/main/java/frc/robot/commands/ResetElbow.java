@@ -4,40 +4,37 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ElbowConstants;
 import frc.robot.subsystems.Elbow;
-import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.Shooter;
 
-public class ElbowAmp extends Command {
-  private final Shooter m_shooter;
-  /** Creates a new ElbowAmp. */
-  public ElbowAmp (Shooter shooter) {
+public class ResetElbow extends Command {
+  private final Elbow m_elbow;
+  /** Creates a new ResetElbow. */
+  public ResetElbow(Elbow elbow) {
     // Use addRequirements() here to declare subsystem dependencies.
-;
-    m_shooter = shooter;
-
-    addRequirements(shooter);
+    m_elbow = elbow;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    m_elbow.resetElbowEncoder();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shooter.ampNote();
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    
-
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

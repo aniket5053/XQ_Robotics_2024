@@ -70,6 +70,9 @@ public class Elbow extends SubsystemBase {
     m_leftElbow.set(0);
     //m_rightElbow.set(0);
   }
+  public void setMotor(double speed) {
+    m_leftElbow.set(speed);
+ }
 
   public void setCoastMode() {
     m_leftElbow.setIdleMode(CANSparkMax.IdleMode.kCoast);
@@ -129,6 +132,15 @@ public double getSmallUpAngle() {
       }
       controlMove(0);
     }
+
+    public void elbowAuto(){
+      while(getEncoderDegrees() > 10){
+        elbowDown();
+      }
+      controlMove(0);
+    }
+
+    
 
     public void elbowAmp(){
       while(getEncoderDegrees() < 34){
